@@ -1,0 +1,2 @@
+# MyTemplate
+My Angular Template
