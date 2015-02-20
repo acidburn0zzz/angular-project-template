@@ -10,8 +10,8 @@ obj
 # Ignore Node & Bower
 ###################
 node_modules
-/modular/client/build
-/modular/build
+/MyTemplate/client/build
+/MyTemplate/build
 bower_components
 **/test/coverage
 /reports

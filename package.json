@@ -4,7 +4,8 @@
   "description": "My test angular template.",
   "main": "app.js",
   "scripts": {
-    "test": "gulp test"
+    "test": "gulp test",
+    "start": "node src/server/app.js"
   },
   "repository": {
     "type": "git",
@@ -15,5 +16,23 @@
   "bugs": {
     "url": "https://github.com/mazhekin/MyTemplate/issues"
   },
-  "homepage": "https://github.com/mazhekin/MyTemplate"
+  "homepage": "https://github.com/mazhekin/MyTemplate",
+  "dependencies": {
+    "body-parser": "^1.12.0",
+    "compression": "^1.4.1",
+    "express": "^4.11.2",
+    "morgan": "^1.5.1"
+  },
+  "devDependencies": {
+    "gulp": "^3.8.11",
+    "gulp-if": "^1.2.5",
+    "gulp-jscs": "^1.4.0",
+    "gulp-jshint": "^1.9.2",
+    "gulp-load-plugins": "^0.8.0",
+    "gulp-nodemon": "^1.0.5",
+    "gulp-print": "^1.1.0",
+    "gulp-util": "^3.0.3",
+    "jshint-stylish": "^1.0.0",
+    "yargs": "^3.1.0"
+  }
 }
