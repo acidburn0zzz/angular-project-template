@@ -3,6 +3,7 @@
 var gulp = require('gulp');
 var args = require('yargs').argv;
 var paths = require('./gulp.config.json');
+var del = require('del');
 
 var plug = require('gulp-load-plugins')({lazy : true});
 
@@ -11,12 +12,32 @@ var port = process.env.PORT || 7207;
 gulp.task('vet', function() {
     log('Analyzing source with JSHint and JSCS');
     return gulp
-        .src(paths.alljs)
+        .src(paths.allJsFiles)
         .pipe(plug.if(args.verbose, plug.print()))
         .pipe(plug.jscs())
         .pipe(plug.jshint())
         .pipe(plug.jshint.reporter('jshint-stylish', {verbose: true}))
         .pipe(plug.jshint.reporter('fail'));
+});
+
+gulp.task('styles', ['clean-styles'], function() {
+    log('Compiling Less --> CSS');
+    return gulp
+        .src(paths.lessFiles)
+        .pipe(plug.plumber())
+        .pipe(plug.less())
+        //.on('error', errorLogger)
+        .pipe(plug.autoprefixer({browser: ['last 2 version', '> 5%']}))
+        .pipe(gulp.dest(paths.temp));
+});
+
+gulp.task('clean-styles', function(done) {
+    var files = paths.temp + '**/*.css';
+    clean(files, done);
+});
+
+gulp.task('less-watcher', function() {
+    gulp.watch([paths.lessFiles], ['styles']);
 });
 
 /**
@@ -34,6 +55,11 @@ gulp.task('serve-dev', function() {
 });
 
 ////////////////////////
+
+function clean(path, done) {
+    log('Cleaning: ' + plug.util.colors.blue(path));
+    del(path, done);
+}
 
 function log(msg) {
 

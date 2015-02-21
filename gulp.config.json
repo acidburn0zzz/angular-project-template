@@ -1,8 +1,10 @@
 {
   "client": "./src/client/",
   "server": "./src/server/",
-  "alljs": [
+  "allJsFiles": [
     "./src/**/*.js",
     "./*.js"
-  ]
+  ],
+  "temp": "./.tmp/",
+  "lessFiles": "./src/client/styles/styles.less"
 }
