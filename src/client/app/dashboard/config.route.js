@@ -35,8 +35,6 @@
     }
 
     // appRun.$inject = ['routehelper'];
-
-
     /* @ngInject */
     /*function configDashboard($routeProvider) {
         alert('route');
@@ -50,5 +48,4 @@
             });
 
     }*/
-
 })();
