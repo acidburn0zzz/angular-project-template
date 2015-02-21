@@ -1,7 +1,6 @@
 /**
  * Created by Vasiliy on 2/18/2015.
  */
-
 (function() {
     'use strict';
 
@@ -11,7 +10,6 @@
 
     appRun.$inject = ['routehelper'];
 
-    /* @ngInject */
     function appRun(routehelper) {
         routehelper.configureRoutes(getRoutes());
     }
@@ -33,5 +31,5 @@
             }
         ];
     }
-})();
 
+})();
