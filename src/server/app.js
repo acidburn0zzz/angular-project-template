@@ -7,10 +7,10 @@ var bodyParser = require('body-parser');
 var compress = require('compression');
 var cors = require('cors');
 //var errorHandler = require('./routes/utils/errorHandler')();
-var favicon = require('serve-favicon');
+//var favicon = require('serve-favicon');
 var logger = require('morgan');
 var port = process.env.PORT || 7208;
-var routes;
+//var routes;
 
 var environment = process.env.NODE_ENV;
 
@@ -30,7 +30,7 @@ console.log('About to crank up node');
 console.log('PORT=' + port);
 console.log('NODE_ENV=' + environment);
 
-app.get('/ping', function(req, res, next) {
+app.get('/ping', function(req, res/*, next*/) {
     console.log(req.body);
     res.send('pong');
 });

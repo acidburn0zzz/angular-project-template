@@ -7,7 +7,7 @@ var del = require('del');
 
 var plug = require('gulp-load-plugins')({lazy : true});
 
-var port = process.env.PORT || 7207;
+var port = process.env.PORT || config.defaultPort;
 
 gulp.task('vet', function() {
     log('Analyzing source with JSHint and JSCS');
@@ -65,17 +65,34 @@ gulp.task('inject', ['wiredep', 'styles'], function() {
 });
 
 /**
- * List the available gulp tasks
- */
-gulp.task('plugins', plug.taskListing);
-
-/**
  * serve the dev environment
  */
-gulp.task('serve-dev', function() {
-    serve({
-        mode: 'dev'
-    });
+gulp.task('serve-dev', ['inject'], function() {
+    var isDev = true;
+    var nodeOptions = {
+        script: config.nodeServer,
+        delayTime: 1,
+        env: {
+            'PORT': port,
+            'NODE_ENV': isDev ? 'dev' : 'build'
+        },
+        watch: [config.server]
+    };
+
+    return plug.nodemon(nodeOptions)
+        .on('restart', ['vet'], function(ev) {
+            log('*** nodemon restarted');
+            log('files changed on restart:\n' + ev);
+        })
+        .on('start', function() {
+            log('*** nodemon started');
+        })
+        .on('crash', function() {
+            log('*** nodemon crashed: script crashed for some reason');
+        })
+        .on('exit', function() {
+            log('*** nodemon: exited cleanly');
+        });
 });
 
 ////////////////////////
@@ -96,44 +113,4 @@ function log(msg) {
     } else {
         plug.util.log(plug.util.colors.blue(msg));
     }
-}
-
-/**
- * Start the node server using nodemon.
- * Optionally start the node debugging.
- * @param  {Object} args - debugging arguments
- * @return {Stream}
- */
-function serve(args) {
-    var options = {
-        script: config.server + 'app.js',
-        delayTime: 1,
-        env: {
-            'NODE_ENV': args.mode,
-            'PORT': port
-        },
-        watch: [config.server]
-    };
-
-    var exec;
-    if (args.debug) {
-       // log('Running node-inspector. Browse to http://localhost:8080/debug?port=5858');
-        exec = require('child_process').exec;
-        exec('node-inspector');
-        options.nodeArgs = [args.debug + '=5858'];
-    }
-
-    log('before nodemon');
-    return plug.nodemon(options)
-        .on('start', function() {
-            log('startBrowserSync');
-            //startBrowserSync();
-        })
-        //.on('change', tasks)
-        .on('restart', function() {
-            log('restarted!');
-            /*setTimeout(function () {
-                browserSync.reload({ stream: false });
-            }, 1000);*/
-        });
 }
