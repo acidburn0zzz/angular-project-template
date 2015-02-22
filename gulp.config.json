@@ -6,5 +6,17 @@
     "./*.js"
   ],
   "temp": "./.tmp/",
-  "lessFiles": "./src/client/styles/styles.less"
+  "lessFiles": "./src/client/styles/styles.less",
+  "index": "./src/client/index.html",
+  "js": [
+    "./src/client/app/**/*.module.js",
+    "./src/client/app/**/*.js",
+    "!./src/client/app/**/*.spec.js"
+  ],
+  "css": "./.tmp/styles.css",
+  "wiredepDefaultOptions": {
+    "bowerJson": "./bower.json",
+    "directory": "./bower_components/",
+    "ignorePath": "../.."
+  }
 }

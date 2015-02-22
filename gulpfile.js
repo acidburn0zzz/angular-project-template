@@ -2,7 +2,7 @@
 /* jshint camelcase:false */
 var gulp = require('gulp');
 var args = require('yargs').argv;
-var paths = require('./gulp.config.json');
+var config = require('./gulp.config.json');
 var del = require('del');
 
 var plug = require('gulp-load-plugins')({lazy : true});
@@ -12,7 +12,7 @@ var port = process.env.PORT || 7207;
 gulp.task('vet', function() {
     log('Analyzing source with JSHint and JSCS');
     return gulp
-        .src(paths.allJsFiles)
+        .src(config.allJsFiles)
         .pipe(plug.if(args.verbose, plug.print()))
         .pipe(plug.jscs())
         .pipe(plug.jshint())
@@ -23,27 +23,53 @@ gulp.task('vet', function() {
 gulp.task('styles', ['clean-styles'], function() {
     log('Compiling Less --> CSS');
     return gulp
-        .src(paths.lessFiles)
+        .src(config.lessFiles)
         .pipe(plug.plumber())
         .pipe(plug.less())
         //.on('error', errorLogger)
         .pipe(plug.autoprefixer({browser: ['last 2 version', '> 5%']}))
-        .pipe(gulp.dest(paths.temp));
+        .pipe(gulp.dest(config.temp));
 });
 
 gulp.task('clean-styles', function(done) {
-    var files = paths.temp + '**/*.css';
+    var files = config.temp + '**/*.css';
     clean(files, done);
 });
 
 gulp.task('less-watcher', function() {
-    gulp.watch([paths.lessFiles], ['styles']);
+    gulp.watch([config.lessFiles], ['styles']);
+});
+
+gulp.task('wiredep', function() {
+    log('Wire up the bower css js and our app js into the html');
+
+    var options = config.wiredepDefaultOptions;
+    options.bowerJson = require(options.bowerJson);
+
+    var wiredep = require('wiredep').stream;
+
+    return gulp
+        .src(config.index)
+        .pipe(wiredep(options))
+        .pipe(plug.inject(gulp.src(config.js)))
+        .pipe(gulp.dest(config.client));
+});
+
+gulp.task('inject', ['wiredep', 'styles'], function() {
+    log('Wire up the app css into the html, and call wiredep');
+
+    var wiredep = require('wiredep').stream;
+
+    return gulp
+        .src(config.index)
+        .pipe(plug.inject(gulp.src(config.css)))
+        .pipe(gulp.dest(config.client));
 });
 
 /**
  * List the available gulp tasks
  */
-gulp.task('help', plug.taskListing);
+gulp.task('plugins', plug.taskListing);
 
 /**
  * serve the dev environment
@@ -82,13 +108,13 @@ function log(msg) {
  */
 function serve(args) {
     var options = {
-        script: paths.server + 'app.js',
+        script: config.server + 'app.js',
         delayTime: 1,
         env: {
             'NODE_ENV': args.mode,
             'PORT': port
         },
-        watch: [paths.server]
+        watch: [config.server]
     };
 
     var exec;
