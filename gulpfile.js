@@ -2,7 +2,7 @@
 /* jshint camelcase:false */
 var gulp = require('gulp');
 var args = require('yargs').argv;
-var config = require('./gulp.config.json');
+var config = require('./gulp.config')();
 var del = require('del');
 
 var plug = require('gulp-load-plugins')({lazy : true});
@@ -44,8 +44,6 @@ gulp.task('wiredep', function() {
     log('Wire up the bower css js and our app js into the html');
 
     var options = config.wiredepDefaultOptions;
-    options.bowerJson = require(options.bowerJson);
-
     var wiredep = require('wiredep').stream;
 
     return gulp
