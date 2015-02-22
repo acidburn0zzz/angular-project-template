@@ -24,6 +24,7 @@
     "morgan": "^1.5.1"
   },
   "devDependencies": {
+    "browser-sync": "^2.2.1",
     "del": "^1.1.1",
     "gulp": "^3.8.11",
     "gulp-autoprefixer": "^2.1.0",

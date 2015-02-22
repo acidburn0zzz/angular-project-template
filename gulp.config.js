@@ -13,7 +13,7 @@ module.exports = function() {
             './src/**/*.js',
             './*.js'
         ],
-        lessFiles: client + 'styles/styles.less',
+        lessFile: client + 'styles/styles.less',
         index: client + 'index.html',
         js: [
           clientApp + '**/*.module.js',
@@ -21,6 +21,11 @@ module.exports = function() {
           '!' + clientApp + '**/*.spec.js'
         ],
         css: temp + 'styles.css',
+
+        /**
+         * browser sync
+         */
+        browserReloadDelay: 1000,
 
         /**
         * Bower and NPM locations
