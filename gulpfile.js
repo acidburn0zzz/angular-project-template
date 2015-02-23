@@ -89,7 +89,7 @@ gulp.task('templatecache', ['clean-code'], function() {
             config.templateCache.file,
             config.templateCache.options
             ))
-        .pipe(gulp.dest(config.temp))
+        .pipe(gulp.dest(config.temp));
 });
 
 gulp.task('wiredep', function() {
@@ -105,7 +105,7 @@ gulp.task('wiredep', function() {
         .pipe(gulp.dest(config.client));
 });
 
-gulp.task('inject', ['wiredep', 'styles'], function() {
+gulp.task('inject', ['wiredep', 'styles', 'images', 'templatecache'], function() {
     log('Wire up the app css into the html, and call wiredep');
 
     var wiredep = require('wiredep').stream;
@@ -116,11 +116,39 @@ gulp.task('inject', ['wiredep', 'styles'], function() {
         .pipe(gulp.dest(config.client));
 });
 
+gulp.task('optimize', ['inject'], function() {
+    log('Optimizing the javascript, css, html');
+
+    var assets = plug.useref.assets({searchPath: './'});
+    var templateCache = config.temp + config.templateCache.file;
+
+    return gulp
+        .src(config.index)
+        .pipe(plug.plumber())
+        .pipe(plug.inject(gulp.src(templateCache, {read: false}), {
+            starttag: '<!-- inject:templates:js -->'
+        }))
+        .pipe(assets)
+        .pipe(assets.restore())
+        .pipe(plug.useref())
+        .pipe(gulp.dest(config.build));
+});
+
+gulp.task('serve-build', ['optimize'], function() {
+    serve(false);
+});
+
 /**
  * serve the dev environment
  */
 gulp.task('serve-dev', ['inject'], function() {
-    var isDev = true;
+    serve(true);
+});
+
+////////////////////////
+
+function serve(isDev) {
+
     var nodeOptions = {
         script: config.nodeServer,
         delayTime: 1,
@@ -142,7 +170,7 @@ gulp.task('serve-dev', ['inject'], function() {
         })
         .on('start', function() {
             log('*** nodemon started');
-            startBrowserSync();
+            startBrowserSync(isDev);
         })
         .on('crash', function() {
             log('*** nodemon crashed: script crashed for some reason');
@@ -150,33 +178,36 @@ gulp.task('serve-dev', ['inject'], function() {
         .on('exit', function() {
             log('*** nodemon: exited cleanly');
         });
-});
-
-////////////////////////
+}
 
 function changeEvent(event) {
     var srcPattern = new RegExp('/.*(?=/' + config.source + ')/');
     log('File ' + event.path.replace(srcPattern, '') + ' ' + event.type);
 }
 
-function startBrowserSync() {
+function startBrowserSync(isDev) {
     if (args.nosync || browserSync.active) {
         return;
     }
 
     log('Starting browser-sync on port ' + port);
 
-    gulp.watch([config.lessFile], ['styles'])
-        .on('change', function(event) { changeEvent(event); });
+    if (isDev) {
+        gulp.watch([config.lessFile], ['styles'])
+            .on('change', function(event) { changeEvent(event); });
+    } else {
+        gulp.watch([config.lessFile, config.js, config.htmlTemplates], ['optimize', browserSync.reload])
+            .on('change', function(event) { changeEvent(event); });
+    }
 
     var options = {
         proxy: 'localhost:' + port,
         port: 3000,
-        files: [
+        files: isDev ? [
             config.client + '**/*.*',
             '!' + config.lessFile,
             config.temp + '**/*.css'
-        ],
+        ] : [],
         ghostMode: {
             clicks: true,
             location: false,

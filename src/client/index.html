@@ -6,15 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
     <title data-ng-bind="title"></title>
 
+    <!-- build:css styles/lib.css-->
     <!-- bower:css -->
     <link rel="stylesheet" href="/bower_components/toastr/toastr.css" />
     <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="/bower_components/font-awesome/css/font-awesome.css" />
     <!-- endbower -->
+    <!-- endbuild -->
 
+    <!-- build:css styles/app.css-->
     <!-- inject:css -->
     <link rel="stylesheet" href="/.tmp/styles.css">
     <!-- endinject -->
+    <!-- endbuild -->
 
 </head>
 <body>
@@ -26,6 +30,7 @@
     </div>
 </div>
 
+<!-- build:js js/lib.js-->
 <!-- bower:js -->
 <script src="/bower_components/jquery/dist/jquery.js"></script>
 <script src="/bower_components/toastr/toastr.js"></script>
@@ -34,7 +39,9 @@
 <script src="/bower_components/angular-route/angular-route.js"></script>
 <script src="/bower_components/bootstrap/dist/js/bootstrap.js"></script>
 <!-- endbower -->
+<!-- endbuild -->
 
+<!-- build:js js/app.js-->
 <!-- inject:js -->
 <script src="/src/client/app/app.module.js"></script>
 <script src="/src/client/app/avengers/avengers.module.js"></script>
@@ -42,8 +49,8 @@
 <script src="/src/client/app/dashboard/dashboard.module.js"></script>
 <script src="/src/client/app/layout/layout.module.js"></script>
 <script src="/src/client/app/blocks/exception/exception.module.js"></script>
-<script src="/src/client/app/blocks/logger/logger.module.js"></script>
 <script src="/src/client/app/blocks/router/router.module.js"></script>
+<script src="/src/client/app/blocks/logger/logger.module.js"></script>
 <script src="/src/client/app/avengers/avengers.js"></script>
 <script src="/src/client/app/avengers/config.route.js"></script>
 <script src="/src/client/app/core/config.js"></script>
@@ -52,9 +59,14 @@
 <script src="/src/client/app/dashboard/dashboard.js"></script>
 <script src="/src/client/app/blocks/exception/exception-handler.provider.js"></script>
 <script src="/src/client/app/blocks/exception/exception.js"></script>
-<script src="/src/client/app/blocks/logger/logger.js"></script>
 <script src="/src/client/app/blocks/router/routehelper.js"></script>
+<script src="/src/client/app/blocks/logger/logger.js"></script>
 <!-- endinject -->
+
+<!-- inject:templates:js -->
+<!-- endinject -->
+
+<!-- endbuild -->
 
 </body>
 </html>
