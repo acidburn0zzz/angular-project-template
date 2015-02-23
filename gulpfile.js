@@ -105,7 +105,7 @@ gulp.task('wiredep', function() {
         .pipe(gulp.dest(config.client));
 });
 
-gulp.task('inject', ['wiredep', 'styles', 'images', 'templatecache'], function() {
+gulp.task('inject', ['wiredep', 'styles', 'templatecache'], function() {
     log('Wire up the app css into the html, and call wiredep');
 
     var wiredep = require('wiredep').stream;
@@ -116,11 +116,13 @@ gulp.task('inject', ['wiredep', 'styles', 'images', 'templatecache'], function()
         .pipe(gulp.dest(config.client));
 });
 
-gulp.task('optimize', ['inject'], function() {
+gulp.task('optimize', ['inject', 'fonts', 'images'], function() {
     log('Optimizing the javascript, css, html');
 
     var assets = plug.useref.assets({searchPath: './'});
     var templateCache = config.temp + config.templateCache.file;
+    var cssFilter = plug.filter('**/*.css');
+    var jsFilter = plug.filter('**/*.js');
 
     return gulp
         .src(config.index)
@@ -129,6 +131,12 @@ gulp.task('optimize', ['inject'], function() {
             starttag: '<!-- inject:templates:js -->'
         }))
         .pipe(assets)
+        .pipe(cssFilter)
+        .pipe(plug.csso())
+        .pipe(cssFilter.restore())
+        .pipe(jsFilter)
+        .pipe(plug.uglify())
+        .pipe(jsFilter.restore())
         .pipe(assets.restore())
         .pipe(plug.useref())
         .pipe(gulp.dest(config.build));
