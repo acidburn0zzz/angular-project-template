@@ -8,6 +8,7 @@ module.exports = function() {
         client: client,
         server: server,
         temp: temp,
+        build: './build/',
 
         allJsFiles: [
             './src/**/*.js',
@@ -21,6 +22,8 @@ module.exports = function() {
           '!' + clientApp + '**/*.spec.js'
         ],
         css: temp + 'styles.css',
+        fonts: './bower_components/font-awesome/fonts/**/*.*',
+        images: client + 'images/**/*.*',
 
         /**
          * browser sync

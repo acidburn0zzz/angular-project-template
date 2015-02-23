@@ -9,12 +9,14 @@ obj
 
 # Ignore Node & Bower
 ###################
+bower_components
 node_modules
 /MyTemplate/client/build
 /MyTemplate/build
-bower_components
 **/test/coverage
 /reports
+.tmp
+build
 
 # Ignore Web Storm #
 .idea
@@ -59,4 +61,5 @@ ehthumbs.db
 Icon?
 Thumbs.db
 packages
+
 
