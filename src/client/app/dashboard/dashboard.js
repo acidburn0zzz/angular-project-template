@@ -9,14 +9,19 @@
         .module('app.dashboard')
         .controller('Dashboard', Dashboard);
 
-    Dashboard.$inject = [];
-
-    function Dashboard() {
+    function Dashboard(logger) {
 
         /*jshint validthis: true */
         var vm = this;
 
         vm.test = 'Hello form dashboard';
+
+        /////////////////////////////////////
+        activate();
+
+        function activate() {
+            logger.info('Dashboard loaded');
+        }
     }
 
 })();

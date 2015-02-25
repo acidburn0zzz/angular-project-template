@@ -1,7 +1,3 @@
-/**
- * Created by Vasiliy on 2/18/2015.
- */
-
 (function() {
     'use strict';
 
@@ -9,14 +5,20 @@
         .module('app.avengers')
         .controller('Avengers', Avengers);
 
-    Avengers.$inject = [];
-
-    function Avengers() {
+    function Avengers(logger) {
 
         /*jshint validthis: true */
         var vm = this;
 
         vm.test = 'Hello form Avengers!';
+
+        //////////////////////////////////////
+
+        activate();
+
+        function activate() {
+            logger.info('Avengers loaded');
+        }
     }
 
 })();
