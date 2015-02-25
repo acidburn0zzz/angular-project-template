@@ -145,9 +145,42 @@ gulp.task('optimize', ['inject', 'fonts', 'images'], function() {
         .pipe(plug.uglify())
         .pipe(jsAppFilter.restore())
 
+        .pipe(plug.rev())// app.js --> app.lj8889jr.js
         .pipe(assets.restore())
-        .pipe(plug.useref())
+        .pipe(plug.useref()) // parse the build blocks in the HTML, replace them and pass those files through
+        .pipe(plug.revReplace())
+
+        .pipe(gulp.dest(config.build))
+        .pipe(plug.rev.manifest())
         .pipe(gulp.dest(config.build));
+});
+
+/**
+ * Bump the version
+ * --type=pre will bump the prerelease version *.*.*-x
+ * --type=patch patch or no flag will bump the patch version *.*.x
+ * --type=minor will bump the minor version *.x.*
+ * --type=major will bump the major version x.*.*
+ * --version=1.2.3 will bump to a specific version and ignore other flags
+ */
+gulp.task('bump', function() {
+    var msg = 'Bumping versions';
+    var type =  args.type;
+    var version =  args.version;
+    var options = {};
+    if (version) {
+        options.version = version;
+        msg += ' to ' + version;
+    } else {
+        options.type = type;
+        msg += ' for a ' + type;
+    }
+    log(msg);
+    return gulp
+        .src(config.packages)
+        //.pipe(plug.print())
+        .pipe(plug.bump(options))
+        .pipe(gulp.dest(config.root));
 });
 
 gulp.task('serve-build', ['optimize'], function() {
