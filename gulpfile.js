@@ -184,14 +184,18 @@ gulp.task('bump', function() {
 });
 
 gulp.task('serve-build', ['optimize'], function() {
-    serve(false);
+    serve(false /* isDev */);
 });
 
 /**
  * serve the dev environment
  */
 gulp.task('serve-dev', ['inject'], function() {
-    serve(true);
+    serve(true /* isDev */);
+});
+
+gulp.task('test', ['vet', 'templatecache'], function(done) {
+    startTests(true /* singleRun */, done);
 });
 
 ////////////////////////
@@ -272,6 +276,26 @@ function startBrowserSync(isDev) {
     };
 
     browserSync(options);
+}
+
+function startTests(singleRun, done) {
+    var karma = require('karma').server;
+    var excludeFiles = [];
+
+    karma.start({
+        config: __dirname + '/karma.conf.js',
+        exclude: excludeFiles,
+        single: !!singleRun
+    }, karmaCompleted);
+
+    function karmaCompleted(karmaResult) {
+        log('Karma completed!');
+        if (karmaResult === 1) {
+            done('karma: tests failed with code ' + karmaResult);
+        } else {
+            done();
+        }
+    }
 }
 
 function clean(path, done) {

@@ -1,0 +1,19 @@
+<script type="text/ng-template" id="app/auth/login.dlg.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Login</h3>
+    </div>
+    <div class="modal-body">
+        <form name="loginForm" novalidate>
+            <label for="username">Username:</label>
+            <input type="text" id="username" ng-model="vm.credentials.username">
+            <label for="password">Password:</label>
+            <input type="password" id="password" ng-model="vm.credentials.password">
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="vm.login(vm.credentials)">Login</button>
+        <button class="btn btn-warning" ng-click="vm.cancel()">Cancel</button>
+    </div>
+</script>
+
+

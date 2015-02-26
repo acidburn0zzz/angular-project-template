@@ -19,12 +19,45 @@
          * but this is easier to maintain.
          */
         'app.core',
+        'app.auth',
         /*
          * Feature areas
          */
         'app.dashboard',
         'app.avengers',
-        'app.layout'
-    ]);
+        'app.layout',
+        /*
+        * 3d party
+        * */
+        'ui.bootstrap'
+    ])
+    .run(appRun);
 
+    ///////////////////////////////////////////////////
+
+    function appRun($rootScope) {
+
+        $rootScope.$on('$routeChangeStart', function(event, next, current){
+
+            var requireLogin = next.$$route.data.requireLogin;
+            if (requireLogin) {
+                alert('prevent');
+                event.preventDefault();
+            }
+
+            //console.log('Changing from '+angular.toJson(current)+' to '+angular.toJson(next));
+        });
+        /*
+        $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
+
+            alert('$stateChangeStart');
+
+            var requireLogin = toState.data.requireLogin;
+
+            if (requireLogin && typeof $rootScope.currentUser === 'undefined') {
+                event.preventDefault();
+                // get me a login modal!
+            }
+        });*/
+    }
 })();

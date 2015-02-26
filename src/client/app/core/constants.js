@@ -1,7 +1,3 @@
-/**
- * Created by Vasiliy on 2/18/2015.
- */
-
 /* global toastr:false, moment:false */
 (function() {
     'use strict';
