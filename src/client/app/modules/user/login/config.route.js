@@ -17,7 +17,7 @@
             {
                 url: '/user/login',
                 config: {
-                    templateUrl: 'app/user/login/login.html',
+                    templateUrl: 'app/modules/user/login/login.html',
                     controller: 'UserLogin',
                     controllerAs: 'vm',
                     title: 'user login',
