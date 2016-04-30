@@ -13,7 +13,7 @@
         /*jshint validthis: true */
         var vm = this;
 
-        vm.test = 'Hello form dashboard';
+        vm.title = 'Главная страница';
 
         /////////////////////////////////////
         activate();

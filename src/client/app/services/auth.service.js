@@ -6,9 +6,9 @@
         .module('app')
         .service('authService', authService);
 
-    function authService($location, $rootScope) {
+    function authService($location, $rootScope, $window) {
 
-        var authUser = null;
+        var authUser = $window.localStorage.getItem('user');
 
         var service = {
             login: login,
@@ -17,7 +17,7 @@
         };
 
         return service;
-        /////////////////////
+        ////////////////////
 
         function login(username, password) {
             authUser = null;
@@ -25,6 +25,7 @@
                 authUser = {
                     username: 'test'
                 };
+                $window.localStorage.setItem('user', authUser);
                 $rootScope.$broadcast('user-logged-changed', authUser);
             }
             return authUser;
@@ -32,6 +33,7 @@
 
         function logout() {
             authUser = null;
+            $window.localStorage.setItem('user', authUser);
             $rootScope.$broadcast('user-logged-changed', authUser);
             $location.path('/');
         }

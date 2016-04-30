@@ -5,7 +5,7 @@
         .module('app.user')
         .controller('UserLogin', UserLogin);
 
-    function UserLogin(logger, authService) {
+    function UserLogin(logger, authService, $location) {
 
         /*jshint validthis: true */
         var vm = this;
@@ -15,6 +15,7 @@
             if (user === null) {
                 logger.error('Неправильные логин или пароль');
             }
+            $location.path('/');
         };
 
         //////////////////////////////////////

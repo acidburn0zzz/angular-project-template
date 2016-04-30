@@ -23,19 +23,31 @@
          * Feature areas
          */
         'app.dashboard',
-        'app.avengers',
+        'app.layout',
+
         'app.user',
-        'app.layout'
+        'app.orders'
     ]);
+
+    angular
+        .module('app')
+        .config(['$locationProvider',  appConfig]);
+
+    function appConfig($locationProvider) {
+        $locationProvider.html5Mode(true);
+    }
 
     angular
         .module('app')
         .run(['$rootScope', '$location', 'authService',  appRun]);
 
-    function appRun($rootScope, $location) {
-        $rootScope.$on('$routeChangeStart', function (event) {
+    function appRun($rootScope, $location, authService) {
+        $rootScope.$on('$routeChangeStart', function (event, next, current) {
             //event.preventDefault();
-            $location.path('/user/login');
+            var user = authService.getAuthUser();
+            if (user === null) {
+                $location.path('/user/login');
+            }
         });
     }
 
