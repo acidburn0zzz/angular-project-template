@@ -24,7 +24,19 @@
          */
         'app.dashboard',
         'app.avengers',
+        'app.user',
         'app.layout'
     ]);
+
+    angular
+        .module('app')
+        .run(['$rootScope', '$location', 'authService',  appRun]);
+
+    function appRun($rootScope, $location) {
+        $rootScope.$on('$routeChangeStart', function (event) {
+            //event.preventDefault();
+            $location.path('/user/login');
+        });
+    }
 
 })();

@@ -23,7 +23,7 @@ gulp.task('vet', function() {
         .pipe(plug.jshint.reporter('jshint-stylish', {verbose: true}))
         .pipe(plug.jshint.reporter('fail'));
 });
-
+/*
 gulp.task('styles', ['clean-styles'], function() {
     log('Compiling Less --> CSS');
     return gulp
@@ -34,7 +34,7 @@ gulp.task('styles', ['clean-styles'], function() {
         .pipe(plug.autoprefixer({browser: ['last 2 version', '> 5%']}))
         .pipe(gulp.dest(config.temp));
 });
-
+*/
 gulp.task('fonts', ['clean-fonts'], function() {
     log('Copying fonts');
     return gulp.src(config.fonts)
@@ -61,11 +61,11 @@ gulp.task('clean-fonts', function(done) {
 gulp.task('clean-images', function(done) {
     clean(config.build + 'images/**/*.*', done);
 });
-
+/*
 gulp.task('clean-styles', function(done) {
-    clean(config.temp + '**/*.css', done);
+    clean(config.temp + "***.css, done);
 });
-
+*/
 gulp.task('clean-code', function(done) {
     var files = [].concat(
         config.temp + '**/*.js',
@@ -74,11 +74,11 @@ gulp.task('clean-code', function(done) {
     );
     clean(files, done);
 });
-
+/*
 gulp.task('less-watcher', function() {
     gulp.watch([config.lessFile], ['styles']);
 });
-
+*/
 gulp.task('templatecache', ['clean-code'], function() {
     log('Creating AngularJS $templateCache');
 
@@ -101,11 +101,12 @@ gulp.task('wiredep', function() {
     return gulp
         .src(config.index)
         .pipe(wiredep(options))
+        .pipe(plug.inject(gulp.src(['./src/client/css/**/*.css'])))
         .pipe(plug.inject(gulp.src(config.js)))
         .pipe(gulp.dest(config.client));
 });
-
-gulp.task('inject', ['wiredep', 'styles', 'templatecache'], function() {
+// 'styles',
+gulp.task('inject', ['wiredep', 'templatecache'], function() {
     log('Wire up the app css into the html, and call wiredep');
 
     var wiredep = require('wiredep').stream;
@@ -194,6 +195,8 @@ gulp.task('serve-dev', ['inject'], function() {
     serve(true);
 });
 
+gulp.task('default', ['serve-dev']);
+
 ////////////////////////
 
 function serve(isDev) {
@@ -242,10 +245,10 @@ function startBrowserSync(isDev) {
     log('Starting browser-sync on port ' + port);
 
     if (isDev) {
-        gulp.watch([config.lessFile], ['styles'])
-            .on('change', function(event) { changeEvent(event); });
+        //gulp.watch([config.lessFile], ['styles'])
+        //    .on('change', function(event) { changeEvent(event); });
     } else {
-        gulp.watch([config.lessFile, config.js, config.htmlTemplates], ['optimize', browserSync.reload])
+        gulp.watch([/*config.lessFile,*/ config.js, config.htmlTemplates], ['optimize', browserSync.reload])
             .on('change', function(event) { changeEvent(event); });
     }
 

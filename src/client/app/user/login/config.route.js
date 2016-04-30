@@ -3,7 +3,7 @@
     'use strict';
 
     angular
-        .module('app.avengers')
+        .module('app.user')
         .run(appRun);
 
     appRun.$inject = ['routehelper'];
@@ -15,12 +15,12 @@
     function getRoutes() {
         return [
             {
-                url: '/avengers',
+                url: '/user/login',
                 config: {
-                    templateUrl: 'app/avengers/avengers.html',
-                    controller: 'Avengers',
+                    templateUrl: 'app/user/login/login.html',
+                    controller: 'UserLogin',
                     controllerAs: 'vm',
-                    title: 'avengers',
+                    title: 'user login',
                     settings: {
                         nav: 2,
                         content: '<i class="fa fa-lock"></i> Avengers'
