@@ -5,12 +5,17 @@
         .module('app.user')
         .controller('UserLogin', UserLogin);
 
-    function UserLogin(logger) {
+    function UserLogin(logger, authService) {
 
         /*jshint validthis: true */
         var vm = this;
 
-        vm.test = 'Hello form Login!';
+        vm.login = function (username, password) {
+            var user = authService.login(username, password)
+            if (user === null) {
+                logger.error('Неправильные логин или пароль');
+            }
+        };
 
         //////////////////////////////////////
 

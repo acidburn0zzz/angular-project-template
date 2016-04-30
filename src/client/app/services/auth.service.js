@@ -4,9 +4,12 @@
 
     angular
         .module('app')
-        .factory('authService', authService);
+        .service('authService', authService);
 
-    function authService($location) {
+    function authService($location, $rootScope) {
+
+        var authUser = null;
+
         var service = {
             login: login,
             logout: logout,
@@ -16,18 +19,20 @@
         return service;
         /////////////////////
 
-        var authUser = null;
-
         function login(username, password) {
-            if (username==='test' && password=='test') {
+            authUser = null;
+            if (username==='test' && password==='test') {
                 authUser = {
                     username: 'test'
-                }
+                };
+                $rootScope.$broadcast('user-logged-changed', authUser);
             }
+            return authUser;
         }
 
         function logout() {
             authUser = null;
+            $rootScope.$broadcast('user-logged-changed', authUser);
             $location.path('/');
         }
 

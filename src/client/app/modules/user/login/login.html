@@ -1,1 +1,19 @@
-<div>LOGIN</div>
+<div style="width:50%;">
+    <h3>Введите логин и пароль</h3>
+    <form ng-submit="vm.login(vm.username, vm.password);">
+        <div class="form-group">
+            <label>Логин</label>
+            <input type="text" class="form-control" ng-model="vm.username">
+        </div>
+        <div class="form-group">
+            <label>Пароль</label>
+            <input type="password" class="form-control" ng-model="vm.password">
+        </div>
+        <!--<div class="checkbox">
+            <label>
+                <input type="checkbox"> Check me out
+            </label>
+        </div>-->
+        <button type="submit" class="btn btn-default">Ввод</button>
+    </form>
+</div>
